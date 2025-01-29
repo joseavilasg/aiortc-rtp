@@ -76,7 +76,12 @@ class RTCRtpSender:
     :param transport: An :class:`RTCDtlsTransport`.
     """
 
-    def __init__(self, trackOrKind: Union[MediaStreamTrack, str], transport, rtp_timestamp: int) -> None:
+    def __init__(
+        self,
+        trackOrKind: Union[MediaStreamTrack, str],
+        transport,
+        rtp_timestamp: int
+    ) -> None:
         if transport.state == "closed":
             raise InvalidStateError
 

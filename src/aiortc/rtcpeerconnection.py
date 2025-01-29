@@ -1089,7 +1089,11 @@ class RTCPeerConnection(AsyncIOEventEmitter):
         transceiver = RTCRtpTransceiver(
             direction=direction,
             kind=kind,
-            sender=RTCRtpSender(sender_track or kind, dtlsTransport, self.__configuration.rtp_timestamp),
+            sender=RTCRtpSender(
+                sender_track or kind,
+                dtlsTransport,
+                self.__configuration.rtp_timestamp
+            ),
             receiver=RTCRtpReceiver(kind, dtlsTransport),
         )
         transceiver.receiver._set_rtcp_ssrc(transceiver.sender._ssrc)
