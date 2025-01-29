@@ -63,7 +63,7 @@ class RTCRtpSender:
     :param transport: An :class:`RTCDtlsTransport`.
     """
 
-    def __init__(self, trackOrKind: Union[MediaStreamTrack, str], transport) -> None:
+    def __init__(self, trackOrKind: Union[MediaStreamTrack, str], transport, rtp_timestamp: int) -> None:
         if transport.state == "closed":
             raise InvalidStateError
 
@@ -102,6 +102,7 @@ class RTCRtpSender:
         self.__lsr_time: Optional[float] = None
         self.__ntp_timestamp = 0
         self.__rtp_timestamp = 0
+        self.__initial_rtp_timestamp = rtp_timestamp
         self.__octet_count = 0
         self.__packet_count = 0
         self.__rtt: Optional[float] = None
@@ -329,12 +330,17 @@ class RTCRtpSender:
         """
         self.__force_keyframe = True
 
+    def _get_timestamp_origin(self) -> int:
+        if self.__initial_rtp_timestamp != 0:
+            return self.__initial_rtp_timestamp
+        return random32()
+
     async def _run_rtp(self, codec: RTCRtpCodecParameters) -> None:
         self.__log_debug("- RTP started")
         self.__rtp_started.set()
 
         sequence_number = random16()
-        timestamp_origin = random32()
+        timestamp_origin = self._get_timestamp_origin()
         try:
             while True:
                 if not self.__track:

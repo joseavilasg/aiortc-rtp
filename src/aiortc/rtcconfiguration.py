@@ -31,3 +31,5 @@ class RTCConfiguration:
 
     iceServers: Optional[List[RTCIceServer]] = None
     "A list of :class:`RTCIceServer` objects to configure STUN / TURN servers."
+    rtp_timestamp: int = 0
+    "The RTP timestamp to start with."
