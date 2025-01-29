@@ -80,7 +80,7 @@ class RTCRtpSender:
         self,
         trackOrKind: Union[MediaStreamTrack, str],
         transport,
-        rtp_timestamp: int
+        rtp_timestamp: int = 0,
     ) -> None:
         if transport.state == "closed":
             raise InvalidStateError
