@@ -78,7 +78,10 @@ class JitterBuffer:
                 # we now have a complete frame, only store the first one
                 if frame is None:
                     frame = JitterFrame(
-                        data=b"".join([x._data for x in packets]), timestamp=timestamp
+                        data=b"".join(
+                            [x._data for x in packets if hasattr(x, "_data")]
+                        ),
+                        timestamp=timestamp,
                     )
                     remove = count
 
